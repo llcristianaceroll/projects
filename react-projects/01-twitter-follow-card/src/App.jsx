@@ -5,13 +5,13 @@ export function App() {
   return (
     <section className="App">
 
-      <TwitterFollowCard isFollowing userName="llcristianaceroll" >
+      <TwitterFollowCard userName="llcristianaceroll" >
       Cristian Acero
       </TwitterFollowCard>
       <TwitterFollowCard userName="leidycristinahurtado" >
        Leidy Hurtado
       </TwitterFollowCard>
-      <TwitterFollowCard isFollowing={false} userName="drageloz" >
+      <TwitterFollowCard userName="drageloz" >
       Andres Suarez
       </TwitterFollowCard>
     </section>
