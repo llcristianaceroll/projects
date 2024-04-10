@@ -6,17 +6,20 @@ import { Turns } from "./Turns";
 import { TURNS } from "../constants";
 import confetti from "canvas-confetti";
 import { checkWinnerFrom, checkEndGame } from "../logic/board";
+import { resetGameStorage, saveGameToStorage } from "../logic/storage";
+
 
 export function Table() {
+  
   const [board, setBoard] = useState(() => {
-    const boarFromStorage = window.localStorage.getItem("board");
+    const boarFromStorage = window.localStorage.getItem('board');
     if (boarFromStorage) return JSON.parse(boarFromStorage);
     return Array(9).fill(null);
   });
 
   const [turn, setTurn] = useState(() => {
     const turnFromStorage = window.localStorage.getItem("turn");
-    return turnFromStorage ? JSON.parse(turnFromStorage) : TURNS.X;
+    return turnFromStorage ?? TURNS.X;
   });
 
   const [winner, setWinner] = useState(null);
@@ -25,6 +28,10 @@ export function Table() {
     setBoard(Array(9).fill(null));
     setTurn(TURNS.X);
     setWinner(null);
+    
+    resetGameStorage();
+    // window.localStorage.removeItem('board');
+    // window.localStorage.removeItem('turn');
   };
 
   const updateBoard = (index) => {
@@ -36,9 +43,14 @@ export function Table() {
 
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
     setTurn(newTurn);
-    window.localStorage.setItem("board", JSON.stringify(newBoard));
-    window.localStorage.setItem("turn", JSON.stringify(newTurn));
 
+    // window.localStorage.setItem('board', JSON.stringify(newBoard));
+    // window.localStorage.setItem('turn', newTurn);
+    saveGameToStorage({
+     board : newBoard,
+     turn : newTurn
+    });
+    
     const newWinner = checkWinnerFrom(newBoard);
     if (newWinner) {
       confetti();
